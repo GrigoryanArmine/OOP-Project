@@ -4,20 +4,20 @@ import java.util.List;
 public class Trader extends User {
     private double balance;
     //private Portfolio portfolio;
-    private ArrayList<Transaction> transactionHistory;
+    private List<Transaction> transactionHistory;
 
-    public Trader(String name, String userId, double initialBalance) {
-        super(name, userId);
+    public Trader(String name, double initialBalance) {
+        super(name, UserType.TRADER);
         this.balance = initialBalance;
         //this.portfolio = new Portfolio();
-        //this.transactionHistory = new ArrayList<>();
+        this.transactionHistory = new ArrayList<>();
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public Portfolio getPortfolio() {
+    //public Portfolio getPortfolio() {
         return portfolio;
     }
 
@@ -25,35 +25,35 @@ public class Trader extends User {
         return transactionHistory;
     }
 
-    public void buyStock(Stock stock, int quantity, double pricePerUnit) {
+    public void buyStock(Stock stock, int quantity, double pricePerUnit) throws InsufficientFundsException {
         double totalCost = quantity * pricePerUnit;
-        if (totalCost >= balance) {
-            //throws exception "Not enough funds to buy " + quantity + " shares of " + stock.getSymbol()
+        if (totalCost > balance) {
+            // throw new InsufficientFundsException("Not enough funds to buy " + quantity + " shares of " + stock.getSymbol());
         }
         balance -= totalCost;
-//        portfolio.addStock(stock, quantity);
-//        Transaction transaction = new Transaction(this, stock, quantity, pricePerUnit, "BUY");
-//        transactionHistory.add(transaction);
+        // portfolio.addStock(stock.getSymbol(), quantity);
+        Transaction transaction = new Transaction(name, stock.getSymbol(), quantity, pricePerUnit);
+        transactionHistory.add(transaction);
+    }
+    // Shoud me implented Stock class
+    // public void sellStock(Stock stock, int quantity, double pricePerUnit) throws StockNotAvailableException {
+    //     if (portfolio.hasStock(stock.getSymbol(), quantity)) {
+    //         portfolio.removeStock(stock.getSymbol(), quantity);
+    //         double totalGain = quantity * pricePerUnit;
+    //         balance += totalGain;
+    //         Transaction transaction = new Transaction(name, stock.getSymbol(), quantity, pricePerUnit);
+    //         transactionHistory.add(transaction);
+    //     } else {
+    //         throw new StockNotAvailableException("You don't have enough shares of " + stock.getSymbol() + " to sell.");
+    //     }
+    // }
 
+    @Override
+    public String toString() {
+        return super.toString() + "\nBalance: " + balance;
     }
 
-    public void sellStock(Stock stock, int quantity, double pricePerUnit) throws StockNotAvailableException {
-        if (portfolio.hasStock(stock, quantity)) {
-            portfolio.removeStock(stock, quantity);
-            double totalGain = quantity * pricePerUnit;
-            balance += totalGain;
-            //Transaction transaction = new Transaction(this, stock, quantity, pricePerUnit, "SELL");
-            // transactionHistory.add(transaction);
-        } else {
-            throw new StockNotAvailableException("You don't have enough shares of " + stock.getSymbol() + " to sell.");
-        }
-    }
-
-    public String toString {
-        return super.toString + "/n Balance: " + balance);
-    }
-
-    public void viewPortfolio() {
-        portfolio.display();
-    }
+    // public void viewPortfolio() {
+    //     portfolio.display();
+    // }
 }
