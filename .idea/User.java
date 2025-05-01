@@ -1,7 +1,8 @@
-import java.util.*;
+import java.util.Random;
 
 public abstract class User {
     public enum UserType {TRADER, BROKER}
+
     private String name;
     private UserType type;
     private String userId;
@@ -16,25 +17,22 @@ public abstract class User {
         return name;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public String toString {
-        return "Name: " + name + ", userID = " + userId;
+    public String generateID() {
+        Random random = new Random();
+        char firstLetter = (char) ('A' + random.nextInt(26));
+        char secondLetter = (char) ('A' + random.nextInt(26));
+        int digits = random.nextInt(1_000_000);
+        String digitPart = String.format("%06d", digits);
+        return "" + firstLetter + secondLetter + digitPart;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", UserID: " + userId;
     }
 }
 
-
-
-    public String generateID() {
-        // Generate two random uppercase letters
-        char firstLetter = (char) ('A' + random.nextInt(26));
-        char secondLetter = (char) ('A' + random.nextInt(26));
-
-        // Generate six random digits
-        int digits = random.nextInt(1_000_000); // from 0 to 999999
-        String digitPart = String.format("%06d", digits);
-
-        return "" + firstLetter + secondLetter + digitPart;
-}
