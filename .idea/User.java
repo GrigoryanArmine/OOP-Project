@@ -21,7 +21,7 @@ public abstract class User {
         return userId;
     }
 
-    public String generateID() {
+    private String generateID() {
         Random random = new Random();
         char firstLetter = (char) ('A' + random.nextInt(26));
         char secondLetter = (char) ('A' + random.nextInt(26));
