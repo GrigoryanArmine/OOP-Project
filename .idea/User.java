@@ -31,20 +31,23 @@ public abstract class User {
     }
 
     @Override
-    public String toString() {
-        return "Name: " + name + ", UserID: " + userId;
-    }
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        } else {
-             User that = (User) o;
-            return (userId.equals(that.userId) && name.equals(that.name) && type.equals(that.type));
-        }
-
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId.equals(user.userId);
     }
+
+    // @Override
+    // public int hashCode() {
+    //     return userId.hashCode();
+    // }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", UserID: " + userId + ", Type: " + type;
+    }
+
     public abstract String getRoleDetails();
 }
 
