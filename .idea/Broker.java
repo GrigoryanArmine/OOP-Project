@@ -1,7 +1,10 @@
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Broker extends User {
-    private List<Trader> clients;
+    private final List<Trader> clients;
 
     public Broker(String name) {
         super(name, UserType.BROKER);
@@ -11,27 +14,38 @@ public class Broker extends User {
     public void addClient(Trader trader) {
         if (!clients.contains(trader)) {
             clients.add(trader);
+            System.out.println("Added client: " + trader.getName());
         }
     }
 
     public void removeClient(Trader trader) {
-        clients.remove(trader);
+        if (clients.remove(trader)) {
+            System.out.println("Removed client: " + trader.getName());
+        }
     }
 
     public List<Trader> getClients() {
-        return clients;
+        return Collections.unmodifiableList(clients);
     }
 
     public void viewClientPortfolio(Trader trader) {
         if (clients.contains(trader)) {
-            //trader.viewPortfolio();
+            System.out.println("\nPortfolio for " + trader.getName() + ":");
+            trader.viewPortfolio();
+            System.out.println("Current balance: $" + trader.getBalance());
         } else {
-            System.out.println("Trader " + trader.getName() + " is not a client of this broker.");
+            System.out.println("Trader " + trader.getName() + " is not a client");
         }
     }
 
     @Override
+    public String getRoleDetails() {
+        return "Licensed broker managing " + clients.size() + " clients";
+    }
+
+    @Override
     public String toString() {
-        return super.toString() + ", Role: BROKER, Clients: " + clients.size();
+        return super.toString() + "\nClients managed: " + clients.size();
     }
 }
+
