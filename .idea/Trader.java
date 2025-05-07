@@ -35,18 +35,25 @@ public class Trader extends User {
         Transaction transaction = new Transaction(name, stock.getSymbol(), quantity, pricePerUnit);
         transactionHistory.add(transaction);
     }
-    // Shoud me implented Stock class
-    // public void sellStock(Stock stock, int quantity, double pricePerUnit) throws StockNotAvailableException {
-    //     if (portfolio.hasStock(stock.getSymbol(), quantity)) {
-    //         portfolio.removeStock(stock.getSymbol(), quantity);
-    //         double totalGain = quantity * pricePerUnit;
-    //         balance += totalGain;
-    //         Transaction transaction = new Transaction(name, stock.getSymbol(), quantity, pricePerUnit);
-    //         transactionHistory.add(transaction);
-    //     } else {
-    //         throw new StockNotAvailableException("You don't have enough shares of " + stock.getSymbol() + " to sell.");
-    //     }
-    // }
+    public void sellStock(Stock stock, int quantity) throws InvalidQuantityException {
+        if (quantity <= 0) throw new InvalidQuantityException(quantity);
+
+        int owned = 0;
+        for (Stock s : portfolio) {
+            if (s.getSymbol().equals(stock.getSymbol())) owned++;
+        }
+        if (owned < quantity) throw new InvalidQuantityException("Not enough shares to sell");
+
+        int removed = 0;
+        for (int i = 0; i < portfolio.size() && removed < quantity; i++) {
+            if (portfolio.get(i).getSymbol().equals(stock.getSymbol())) {
+                portfolio.remove(i);
+                removed++;
+                i--;
+            }
+        }
+        balance += stock.getCurrentPrice() * quantity;
+    }
 
     @Override
     public String toString() {
