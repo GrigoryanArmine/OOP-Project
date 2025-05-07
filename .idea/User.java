@@ -34,5 +34,17 @@ public abstract class User {
     public String toString() {
         return "Name: " + name + ", UserID: " + userId;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        } else {
+             User that = (User) o;
+            return (userId.equals(that.userId) && name.equals(that.name) && type.equals(that.type));
+        }
+
+    }
+    public abstract String getRoleDetails();
 }
 
