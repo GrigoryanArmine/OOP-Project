@@ -71,6 +71,7 @@ public class Trader extends User {
 
     @Override
     public String toString() {
-        return super.toString() + "\nBalance: $%.2f", balance;
+        return super.toString() + String.format("\nBalance: $%.2f", balance);
     }
+
 }
