@@ -1,14 +1,13 @@
-
+// Broker.java
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Broker extends User {
-    private final List<Trader> clients;
+    private final List<Trader> clients = new ArrayList<>();
 
     public Broker(String name) {
         super(name, UserType.BROKER);
-        this.clients = new ArrayList<>();
     }
 
     public void addClient(Trader trader) {
@@ -24,18 +23,19 @@ public class Broker extends User {
         }
     }
 
+    /** Read‐only view of clients */
     public List<Trader> getClients() {
         return Collections.unmodifiableList(clients);
     }
 
     public void viewClientPortfolio(Trader trader) {
-        if (clients.contains(trader)) {
-            System.out.println("\nPortfolio for " + trader.getName() + ":");
-            trader.viewPortfolio();
-            System.out.println("Current balance: $" + trader.getBalance());
-        } else {
+        if (!clients.contains(trader)) {
             System.out.println("Trader " + trader.getName() + " is not a client");
+            return;
         }
+        System.out.printf("\n--- %s's Portfolio ---\n", trader.getName());
+        trader.getPortfolio().display();
+        System.out.printf("Current balance: $%.2f\n\n", trader.getBalance());
     }
 
     @Override
@@ -45,7 +45,9 @@ public class Broker extends User {
 
     @Override
     public String toString() {
-        return super.toString() + "\nClients managed: " + clients.size();
+        return super.toString()
+             + String.format("\nClients managed: %d", clients.size());
     }
 }
+
 
