@@ -1,11 +1,12 @@
-import models.*;
-import exceptions.*;
+import main.models.Market;
+import main.models.Stock;
+import main.models.Trader;
 
 public class Main {
     public static void main(String[] args) {
         Market market = new Market();
-        market.addStock(new Stock("AAPL", 150.0));
-        market.addStock(new Stock("MSFT", 250.0));
+        market.addStock(new Stock("AAPL",150.0));
+        market.addStock(new Stock("MSFT",250.0));
 
         Trader trader = new Trader("Harut", 1000.0);
         try {
