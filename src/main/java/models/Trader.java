@@ -1,30 +1,27 @@
-package models;
-import java.util.ArrayList;
+package main.models;
 
+import main.exceptions.*;
 
 public class Trader extends User {
     private double balance;
-    private ArrayList<Stock> portfolio;
-    private final TransactionHistory transactionHistory;
+    private TransactionHistory transactionHistory;
 
     public Trader(String name, double initialBalance) {
         super(name, UserType.TRADER);
         this.balance = initialBalance;
-        this.portfolio = new ArrayList<>();
-        this.transactionHistory = new ArrayList<>();
+        this.transactionHistory = new TransactionHistory();
     }
 
     public double getBalance() {
         return balance;
     }
-    public ArrayList<Stock> getPortfolio() { return portfolio; }
 
-    public List<Transaction> getTransactionHistory() {
-        return transactionHistory.getTransactionsByTrader(this.getName());
+    public TransactionHistory getTransactionHistory() {
+        return new TransactionHistory();
     }
 
-    public void buyStock(Stock stock, int quantity, double pricePerUnit) throws InsufficientFundsException {
-        double totalCost = quantity * pricePerUnit;
+    public void buyStock(Stock stock, int quantity) throws InsufficientFundsException {
+        double totalCost = quantity * stock.getCurrentPrice();
         if (totalCost > balance) {
             throw new InsufficientFundsException(
                 String.format("Insufficient funds: %.2f needed, but balance is %.2f", 
@@ -36,8 +33,8 @@ public class Trader extends User {
         transactionHistory.addTransaction(new Transaction(
             this.getName(),           
             stock.getSymbol(),        
-            quantity,                 
-            pricePerUnit,             
+            quantity,
+                stock.getCurrentPrice(),
             true                    
         ));
     }
