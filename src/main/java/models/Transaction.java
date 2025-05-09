@@ -1,6 +1,7 @@
-package models;
+package main.models;
 
 
+import main.exceptions.InvalidQuantityException;
 import java.time.LocalDateTime;
 
 public class Transaction {
@@ -11,8 +12,8 @@ public class Transaction {
     private LocalDateTime time;
     private boolean isBuy;
 
-    public Transaction(String traderName, String stockSymbol, int quantity, double pricePerShare, boolean isBuy) {
-        if (quantity <= 0) throw new InvalidTransactionException("Quantity must be positive");
+    public Transaction(String traderName, String stockSymbol, int quantity, double pricePerShare, boolean isBuy) throws InvalidQuantityException{
+        if (quantity <= 0) throw new InvalidQuantityException("Quantity must be positive");
         this.traderName = traderName;
         this.stockSymbol = stockSymbol;
         this.quantity = quantity;
