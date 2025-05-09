@@ -1,10 +1,10 @@
 // Portfolio.java
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Portfolio {
     private final ArrayList<String> symbols;
-    private final List<Integer> quantities;
+    private final ArrayList<Integer> quantities;
     private double totalValue;
 
     public Portfolio() {
