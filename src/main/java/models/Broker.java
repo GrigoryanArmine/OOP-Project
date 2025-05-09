@@ -1,7 +1,7 @@
 package main.models;
 import java.util.ArrayList;
 
-public class Broker extends User {
+public class Broker extends User implements TradeActions {
     private ArrayList<Trader> clients = new ArrayList<>();
 
     public Broker(String name) {
@@ -31,6 +31,26 @@ public class Broker extends User {
             System.out.println("Removed client: " + trader.getName());
         }
     }
+
+     public void buyStockForClient(Trader trader, Stock stock, int quantity) {
+        if (clients.contains(trader)) {
+            try {
+                trader.buyStock(stock, quantity);
+            } catch (Exception e) {
+                System.out.println("Failed to buy stock for client: " + e.getMessage());
+            }
+        }
+    }
+
+    public void sellStockForClient(Trader trader, Stock stock, int quantity) {
+        if (clients.contains(trader)) {
+            try {
+                trader.sellStock(stock, quantity);
+            } catch (Exception e) {
+                System.out.println("Failed to sell stock for client: " + e.getMessage());
+            }
+        }
+    }
   
     public ArrayList<Trader> getClients() {
         return new ArrayList<>(clients);
@@ -46,12 +66,11 @@ public class Broker extends User {
         System.out.printf("Current balance: $%.2f\n\n", trader.getBalance());
     }
 
-    @Override
+    
     public String getRoleDetails() {
         return "Licensed broker managing " + clients.size() + " clients";
     }
 
-    @Override
     public String toString() {
         return super.toString()
              + String.format("\nClients managed: %d", clients.size());
