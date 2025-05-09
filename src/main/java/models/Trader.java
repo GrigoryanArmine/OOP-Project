@@ -11,13 +11,14 @@ public class Trader extends User {
         this.balance = initialBalance;
         this.transactionHistory = new TransactionHistory();
     }
+    
 
     public double getBalance() {
         return balance;
     }
 
     public TransactionHistory getTransactionHistory() {
-        return new TransactionHistory();
+        return new TransactionHistory(transactionHistory);
     }
 
     public void buyStock(Stock stock, int quantity) throws InsufficientFundsException {
@@ -67,3 +68,4 @@ public class Trader extends User {
     }
 
 }
+
