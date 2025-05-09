@@ -6,6 +6,17 @@ public class Broker extends User {
 
     public Broker(String name) {
         super(name, UserType.BROKER);
+        ArrayList<Trader> clients = new ArrayList<>();
+        initializeDefaultTraders();
+    }
+
+    private void initializeDefaultTraders() {
+        String[] names = {"Alice", "Charlie", "Dave", "Eve", "Brian"};
+        for (int i = 0; i < names.length; i++) {
+            double randomBalance = 10000 + (Math.random() * 90000);
+            clients.add(new Trader(names[i], randomBalance));
+        }
+
     }
 
     public void addClient(Trader trader) {
