@@ -2,7 +2,7 @@ package main.models;
 
 import main.exceptions.*;
 
-public class Trader extends User {
+public class Trader extends User implements TradeActions {
     private double balance;
     private TransactionHistory transactionHistory;
 
@@ -11,7 +11,6 @@ public class Trader extends User {
         this.balance = initialBalance;
         this.transactionHistory = new TransactionHistory();
     }
-    
 
     public double getBalance() {
         return balance;
@@ -21,51 +20,66 @@ public class Trader extends User {
         return new TransactionHistory(transactionHistory);
     }
 
+ 
     public void buyStock(Stock stock, int quantity) throws InsufficientFundsException {
         double totalCost = quantity * stock.getCurrentPrice();
         if (totalCost > balance) {
             throw new InsufficientFundsException(
-                String.format("Insufficient funds: %.2f needed, but balance is %.2f", 
-                              totalCost, balance));
+                    String.format("Insufficient funds: %.2f needed, but balance is %.2f", totalCost, balance));
         }
-        
+
         balance -= totalCost;
-        portfolio.addStock(stock.getSymbol(), quantity);
-        transactionHistory.addTransaction(new Transaction(
-            this.getName(),           
-            stock.getSymbol(),        
-            quantity,
-                stock.getCurrentPrice(),
-            true                    
-        ));
+        portfolio.addStock(String.valueOf(stock), quantity);
+        transactionHistory.addTransaction(new Transaction(stock, quantity, stock.getCurrentPrice(), "BUY"));
+        System.out.printf("Bought %d shares of %s at %.2f each.\n", quantity, stock.getSymbol(), stock.getCurrentPrice());
     }
 
-    public void sellStock(Stock stock, int quantity) throws InvalidQuantityException {
-        if (quantity <= 0) {
-            throw new InvalidQuantityException("Invalid quantity: " + quantity);
+   
+    public void sellStock(Stock stock, int quantity) throws InvalidQuantityException, StockNotAvailableException {
+        portfolio.removeStock(String.valueOf(stock), quantity);
+        balance += quantity * stock.getCurrentPrice();
+        transactionHistory.addTransaction(new Transaction(stock, quantity, stock.getCurrentPrice(), "SELL"));
+        System.out.printf("Sold %d shares of %s at %.2f each.\n", quantity, stock.getSymbol(), stock.getCurrentPrice());
+    }
+
+   
+    public void viewPortfolio() {
+        System.out.println("--- Portfolio of " + getName() + " ---");
+        portfolio.display();
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.printf("%s deposited %.2f. New balance: %.2f\n", getName(), amount, balance);
         }
-
-        portfolio.removeStock(stock.getSymbol(), quantity);
-        double totalRevenue = quantity * stock.getCurrentPrice();
-        balance += totalRevenue;
-        transactionHistory.addTransaction(new Transaction(
-            this.getName(),          
-            stock.getSymbol(),        
-            quantity,                
-            stock.getCurrentPrice(), 
-            false                   
-        ));
     }
-    
-    @Override
+
+    public void withdraw(double amount) throws InsufficientFundsException {
+        if (amount > balance) {
+            throw new InsufficientFundsException("Cannot withdraw more than current balance.");
+        }
+        balance -= amount;
+        System.out.printf("%s withdrew %.2f. New balance: %.2f\n", getName(), amount, balance);
+    }
+
+   
     public String getRoleDetails() {
-        return "Professional stock trader with portfolio management capabilities";
+        return null;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + String.format("\nBalance: $%.2f", balance);
+   
+    public void executeBuy(Stock stock, int quantity) throws InsufficientFundsException {
+
     }
 
+    
+    public void executeSell(Stock stock, int quantity) throws InvalidQuantityException {
+
+    }
+
+    
+    public double calculateCommission(double tradeValue) {
+        return 0;
+    }
 }
-
