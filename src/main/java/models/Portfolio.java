@@ -1,4 +1,6 @@
-package models;
+package main.models;
+import main.exceptions.InvalidQuantityException;
+
 import java.util.ArrayList;
 
 public class Portfolio {
@@ -29,14 +31,11 @@ public class Portfolio {
         
         int index = symbols.indexOf(symbol);
         if (index < 0) {
-            throw new IllegalArgumentException("Stock symbol not found: " + symbol);
+            throw new InvalidQuantityException(symbol);
         }
 
         int current = quantities.get(index);
-        if (current < quantity) {
-            throw new IllegalArgumentException(Not enough shares. Requested: " + quantity + " , Available: " + current)
-            );
-        }
+        if (current < quantity) throw new InvalidQuantityException(current, quantity);
 
         int updated = current - quantity;
         if (updated > 0) {
@@ -57,7 +56,7 @@ public class Portfolio {
     public boolean containsStock(String symbol) {
         return symbols.contains(symbol);
     }
-    public List<String> getSymbols() {
+    public ArrayList<String> getSymbols() {
         return new ArrayList<>(symbols);
     }
     public double getTotalValue() {
@@ -78,7 +77,6 @@ public class Portfolio {
             return;
         }
         System.out.println("\n=== Portfolio Summary ===");
-        System.out.printf("%-10s | %-10s\n", "Symbol", "Quantity");
         System.out.println("----------------------");
         for (int i = 0; i < symbols.size(); i++) {
             System.out.printf("%-10s | %-10d\n", symbols.get(i), quantities.get(i));
