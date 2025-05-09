@@ -4,23 +4,20 @@ import java.util.List;
 
 public class Trader extends User {
     private double balance;
-    private final Portfolio portfolio;
+    private ArrayList<Stock> portfolio;
     private final List<Transaction> transactionHistory;
 
     public Trader(String name, double initialBalance) {
         super(name, UserType.TRADER);
         this.balance = initialBalance;
-        this.portfolio = new Portfolio();
+        this.portfolio = new ArrayList<>();
         this.transactionHistory = new ArrayList<>();
     }
 
     public double getBalance() {
         return balance;
     }
-
-    public Portfolio getPortfolio() {
-        return portfolio;
-    }
+    public ArrayList<Stock> getPortfolio() { return portfolio; }
 
     public List<Transaction> getTransactionHistory() {
         return new ArrayList<>(transactionHistory); // Return copy for encapsulation
@@ -59,11 +56,7 @@ public class Trader extends User {
             stock.getCurrentPrice()
         ));
     }
-
-    public void viewPortfolio() {
-        portfolio.display();
-    }
-
+    
     @Override
     public String getRoleDetails() {
         return "Professional stock trader with portfolio management capabilities";
