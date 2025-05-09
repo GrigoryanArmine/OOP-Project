@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Portfolio {
-    private final List<String> symbols;
+    private final ArrayList<String> symbols;
     private final List<Integer> quantities;
     private double totalValue;
 
