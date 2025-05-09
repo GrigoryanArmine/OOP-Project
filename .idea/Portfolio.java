@@ -13,8 +13,8 @@ public class Portfolio {
         this.totalValue = 0.0;
     }
 
-    public void addStock(String symbol, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
+    public void addStock(String symbol, int quantity) throws InvalidQuantityException {
+        if (quantity <= 0) throw new InvalidQuantityException("Quantity must be positive");
         int index = symbols.indexOf(symbol);
         if (index >= 0)
             quantities.set(index, quantities.get(index) + quantity);
@@ -26,7 +26,7 @@ public class Portfolio {
     }
 
     public void removeStock(String symbol, int quantity) throws InvalidQuantityException {
-        if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
+        if (quantity <= 0) throw new InvalidQuantityException("Quantity must be positive");
         
         int index = symbols.indexOf(symbol);
         if (index < 0) {
