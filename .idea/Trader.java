@@ -5,7 +5,7 @@ import java.util.List;
 public class Trader extends User {
     private double balance;
     private ArrayList<Stock> portfolio;
-    private final List<Transaction> transactionHistory;
+    private final TransactionHistory transactionHistory;
 
     public Trader(String name, double initialBalance) {
         super(name, UserType.TRADER);
@@ -20,7 +20,7 @@ public class Trader extends User {
     public ArrayList<Stock> getPortfolio() { return portfolio; }
 
     public List<Transaction> getTransactionHistory() {
-        return new ArrayList<>(transactionHistory); // Return copy for encapsulation
+        return transactionHistory.getTransactionsByTrader(this.getName());
     }
 
     public void buyStock(Stock stock, int quantity, double pricePerUnit) throws InsufficientFundsException {
@@ -33,11 +33,12 @@ public class Trader extends User {
         
         balance -= totalCost;
         portfolio.addStock(stock.getSymbol(), quantity);
-        transactionHistory.add(new Transaction(
-            this.getUserId(), 
-            stock, 
-            quantity, 
-            pricePerUnit
+        transactionHistory.addTransaction(new Transaction(
+            this.getName(),           
+            stock.getSymbol(),        
+            quantity,                 
+            pricePerUnit,             
+            true                    
         ));
     }
 
@@ -49,11 +50,12 @@ public class Trader extends User {
         portfolio.removeStock(stock.getSymbol(), quantity);
         double totalRevenue = quantity * stock.getCurrentPrice();
         balance += totalRevenue;
-        transactionHistory.add(new Transaction(
-            this.getUserId(), 
-            stock, 
-            -quantity, 
-            stock.getCurrentPrice()
+        transactionHistory.addTransaction(new Transaction(
+            this.getName(),          
+            stock.getSymbol(),        
+            quantity,                
+            stock.getCurrentPrice(), 
+            false                   
         ));
     }
     
