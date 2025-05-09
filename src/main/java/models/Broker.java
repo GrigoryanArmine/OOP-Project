@@ -1,8 +1,4 @@
-package models;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+package main.models;
 import java.util.ArrayList;
 
 public class Broker extends User {
@@ -35,7 +31,7 @@ public class Broker extends User {
             return;
         }
         System.out.printf("\n--- %s's Portfolio ---\n", trader.getName());
-        trader.getPortfolio().display();
+        getPortfolio().display();
         System.out.printf("Current balance: $%.2f\n\n", trader.getBalance());
     }
 
