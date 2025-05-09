@@ -1,4 +1,4 @@
-package models;
+package main.models;
 import java.util.Random;
 
 public abstract class User {
@@ -7,11 +7,13 @@ public abstract class User {
     private String name;
     private UserType type;
     private String userId;
+    protected Portfolio portfolio;
 
     public User(String name, UserType type) {
         this.name = name;
         this.type = type;
         this.userId = generateID();
+        this.portfolio = new Portfolio();
     }
 
     public String getName() {
@@ -45,4 +47,7 @@ public abstract class User {
     }
 
     public abstract String getRoleDetails();
+    public Portfolio getPortfolio(){
+        return new Portfolio();
+    }
 }
