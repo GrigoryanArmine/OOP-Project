@@ -28,3 +28,4 @@ public class Stock {
     public ArrayList<Double> getPriceHistory() { return priceHistory; }
     public int getHistorySize() {return historySize;}
 }
+
