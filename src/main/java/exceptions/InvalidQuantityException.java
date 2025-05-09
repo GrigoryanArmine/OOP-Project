@@ -1,6 +1,9 @@
-package exceptions;
+package main.exceptions;
 
 public class InvalidQuantityException extends RuntimeException {
+    public InvalidQuantityException(double quantity, double current) {
+        super(String.format("Insufficient quantity. Current: $%.2f, Required: $%.2f", current, quantity));
+    }
     public InvalidQuantityException(double quantity) {
         super("Invalid quantity: " + quantity);
     }
