@@ -1,6 +1,5 @@
 package main.models;
 import main.exceptions.InvalidQuantityException;
-
 import java.util.ArrayList;
 
 public class Portfolio {
@@ -13,6 +12,12 @@ public class Portfolio {
         this.quantities = new ArrayList<>();
         this.totalValue = 0.0;
     }
+    public Portfolio(Portfolio that) {
+        this.symbols = new ArrayList<>(that.symbols);
+        this.quantities = new ArrayList<>(that.quantities);
+        this.totalValue = that.totalValue;
+    }
+
 
     public void addStock(String symbol, int quantity) throws InvalidQuantityException {
         if (quantity <= 0) throw new InvalidQuantityException("Quantity must be positive");
