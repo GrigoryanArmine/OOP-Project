@@ -12,7 +12,7 @@ public class Transaction {
     private boolean isBuy;
 
     public Transaction(String traderName, String stockSymbol, int quantity, double pricePerShare, boolean isBuy) {
-        if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
+        if (quantity <= 0) throw new InvalidTransactionException("Quantity must be positive");
         this.traderName = traderName;
         this.stockSymbol = stockSymbol;
         this.quantity = quantity;
