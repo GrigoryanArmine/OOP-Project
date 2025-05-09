@@ -13,7 +13,9 @@ public class Market {
     public void addStock(Stock stock) {
         stocks.add(stock);
     }
-
+    public ArrayList<Stock> getStocks() {
+        return new ArrayList<>(stocks);
+    }
     public Stock getStock(String symbol) throws StockNotAvailableException {
         for (Stock stock : stocks) {
             if (stock.getSymbol().equals(symbol)) return stock;
