@@ -1,87 +1,90 @@
 // Portfolio.java
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Portfolio {
-    private final Map<String, Integer> holdings;  // Stock symbol -> quantity
+    private final List<String> symbols;
+    private final List<Integer> quantities;
     private double totalValue;
 
     public Portfolio() {
-        this.holdings = new HashMap<>();
+        this.symbols = new ArrayList<>();
+        this.quantities = new ArrayList<>();
         this.totalValue = 0.0;
     }
 
     public void addStock(String symbol, int quantity) {
         if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
-        
-        int currentQuantity = holdings.getOrDefault(symbol, 0);
-        holdings.put(symbol, currentQuantity + quantity);
+        int index = symbols.indexOf(symbol);
+        if (index >= 0)
+            quantities.set(index, quantities.get(index) + quantity);
+        else {
+            symbols.add(symbol);
+            quantities.add(quantity);
+        }
         updateTotalValue();
     }
 
     public void removeStock(String symbol, int quantity) throws InvalidQuantityException {
         if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
         
-        int currentQuantity = holdings.getOrDefault(symbol, 0);
-        
-        if (currentQuantity < quantity) {
-            throw new InvalidQuantityException(
-                String.format("Not enough shares. Requested: %d, Available: %d", 
-                              quantity, currentQuantity)
+        int index = symbols.indexOf(symbol);
+        if (index < 0) {
+            throw new IllegalArgumentException("Stock symbol not found: " + symbol);
+        }
+
+        int current = quantities.get(index);
+        if (current < quantity) {
+            throw new IllegalArgumentException(Not enough shares. Requested: " + quantity + " , Available: " + current)
             );
         }
-        
-        holdings.put(symbol, currentQuantity - quantity);
-        if (holdings.get(symbol) == 0) {
-            holdings.remove(symbol);
+
+        int updated = current - quantity;
+        if (updated > 0) {
+            quantities.set(index, updated);
+        } else {
+            symbols.remove(index);
+            quantities.remove(index);
         }
+
         updateTotalValue();
     }
 
     public int getQuantity(String symbol) {
-        return holdings.getOrDefault(symbol, 0);
+        int index = symbols.indexOf(symbol);
+        return (index >= 0) ? quantities.get(index) : 0;
     }
-
+    
     public boolean containsStock(String symbol) {
-        return holdings.containsKey(symbol);
+        return symbols.contains(symbol);
     }
-
-    public Map<String, Integer> getHoldings() {
-        return new HashMap<>(holdings); // Return copy for encapsulation
+    public List<String> getSymbols() {
+        return new ArrayList<>(symbols);
     }
-
     public double getTotalValue() {
         return totalValue;
     }
 
     public void updateTotalValue() {
-        // This would typically be called with current market prices
-        // For now, we'll just track the book value
-        // In a real system, you'd inject a MarketPriceService here
-        totalValue = holdings.entrySet().stream()
-            .mapToDouble(entry -> {
-                // In real implementation: market.getCurrentPrice(entry.getKey()) * entry.getValue()
-                return entry.getValue(); // Placeholder - needs price integration
-            })
-            .sum();
+        totalValue = 0.0;
+        for (int qty : quantities) {
+            // Placeholder: add quantity; integrate price lookup as needed
+            totalValue += qty;
+        }
     }
 
     public void display() {
-        if (holdings.isEmpty()) {
+        if (symbols.isEmpty()) {
             System.out.println("Portfolio is empty");
             return;
         }
-        
         System.out.println("\n=== Portfolio Summary ===");
-        System.out.printf("%-10s | %-10s | %-15s\n", "Symbol", "Quantity", "Value");
-        System.out.println("----------------------------------");
-        
-        holdings.forEach((symbol, qty) -> 
-            System.out.printf("%-10s | %-10d | $%-15.2f\n", 
-                            symbol, qty, qty * 0.0) // Placeholder for price
-        );
-        
-        System.out.println("----------------------------------");
-        System.out.printf("Total Value: $%.2f\n\n", totalValue);
+        System.out.printf("%-10s | %-10s\n", "Symbol", "Quantity");
+        System.out.println("----------------------");
+        for (int i = 0; i < symbols.size(); i++) {
+            System.out.printf("%-10s | %-10d\n", symbols.get(i), quantities.get(i));
+        }
+        System.out.println("----------------------");
+        System.out.printf("Total Value: %.2f\n\n", totalValue);
     }
 }
