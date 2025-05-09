@@ -1,7 +1,6 @@
-package models;
-
-import exceptions.*;
+// Trader.java
 import java.util.ArrayList;
+import java.util.List;
 
 public class Trader extends User {
     private double balance;
