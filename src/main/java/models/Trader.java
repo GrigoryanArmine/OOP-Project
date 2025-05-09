@@ -1,6 +1,6 @@
-// Trader.java
+package models;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Trader extends User {
     private double balance;
