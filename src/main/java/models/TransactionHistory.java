@@ -11,6 +11,10 @@ public class TransactionHistory {
         transactions = new ArrayList<>();
     }
 
+    public TransactionHistory(TransactionHistory that) {
+        this.transactions = new ArrayList<>(that.transactions);
+    }
+
     public void addTransaction(Transaction t){
         for (Transaction existing : transactions)
             transactions.add(t);
