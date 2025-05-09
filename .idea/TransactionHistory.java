@@ -1,26 +1,42 @@
+
+package com.oopproject;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class TransactionHistory {
-    private List<Transaction> transactions;
+    private ArrayList<Transaction> transactions;
 
     public TransactionHistory() {
         transactions = new ArrayList<>();
     }
 
     public void addTransaction(Transaction t) throws DuplicateTransactionException {
-        if (transactions.contains(t)) {
-            throw new DuplicateTransactionException("Duplicate transaction detected.");
+        for (Transaction existing : transactions)
+        {
+            if (existing.getTraderName().equals(t.getTraderName())
+                && existing.getStock().getSymbol().equals(t.getStock().getSymbol())
+                && existing.getQuantity() == t.getQuantity()
+                && existing.getPrice() == t.getPrice()
+                && existing.getType() == t.getType()
+                && existing.getTimestamp().equals(t.getTimestamp())) {
+                throw new DuplicateTransactionException("Duplicate transaction detected.");
+            }
         }
         transactions.add(t);
     }
 
-    public List<Transaction> getTransactionsByTrader(String traderName) {
-        return transactions.stream()
-                .filter(t -> t.getTraderName().equals(traderName))
-                .collect(Collectors.toList());
+    public ArrayList<Transaction> getTransactionsByTrader(String traderName) {
+        ArrayList<Transaction> result = new ArrayList<>();
+        for (Transaction t : transactions) {
+            if (t.getTraderName().equals(traderName)) {
+                result.add(t);
+            }
+        }
+        return result;
     }
+
 
     public void saveToFile(String filename) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
@@ -36,7 +52,16 @@ public class TransactionHistory {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                transactions.add(Transaction.fromString(line));
+                // Simple parse logic assuming consistent format
+                String[] parts = line.split(",");
+                if (parts.length < 6) continue;
+                String trader = parts[0];
+                String symbol = parts[1];
+                int quantity = Integer.parseInt(parts[2]);
+                double price = Double.parseDouble(parts[3]);
+                Transaction.Type type = Transaction.Type.valueOf(parts[4]);
+                // Timestamp ignored in this basic parser
+                transactions.add(new Transaction(trader, new Stock(symbol, "Unknown", price, 0), quantity, price, type));
             }
         }
     }
