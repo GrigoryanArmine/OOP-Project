@@ -1,17 +1,27 @@
+
+package com.oopproject;
+
 import java.time.LocalDateTime;
 
-public class Transaction {
+public class Transaction
+{
+    public enum Type {
+        BUY, SELL
+    }
+
     private String traderName;
-    private String stockSymbol;
+    private Stock stock;
     private int quantity;
     private double price;
     private LocalDateTime timestamp;
+    private Type type;
 
-    public Transaction(String traderName, String stockSymbol, int quantity, double price) {
+    public Transaction(String traderName, Stock stock, int quantity, double price, Type type) {
         this.traderName = traderName;
-        this.stockSymbol = stockSymbol;
+        this.stock = stock;
         this.quantity = quantity;
         this.price = price;
+        this.type = type;
         this.timestamp = LocalDateTime.now();
     }
 
@@ -19,8 +29,8 @@ public class Transaction {
         return traderName;
     }
 
-    public String getStockSymbol() {
-        return stockSymbol;
+    public Stock getStock() {
+        return stock;
     }
 
     public int getQuantity() {
@@ -31,22 +41,17 @@ public class Transaction {
         return price;
     }
 
+    public Type getType() {
+        return type;
+    }
+
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
     @Override
     public String toString() {
-        return traderName + "," + stockSymbol + "," + quantity + "," + price + "," + timestamp;
-    }
-
-    public static Transaction fromString(String line) {
-        String[] parts = line.split(",");
-        return new Transaction(
-                parts[0],
-                parts[1],
-                Integer.parseInt(parts[2]),
-                Double.parseDouble(parts[3])
-        );
+        return traderName + "," + stock.getSymbol() + "," + quantity + "," + price + "," + type + "," + timestamp;
     }
 }
+
