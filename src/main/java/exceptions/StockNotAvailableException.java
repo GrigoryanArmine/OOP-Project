@@ -1,4 +1,4 @@
-package exceptions;
+package main.exceptions;
 public class StockNotAvailableException extends RuntimeException {
     public StockNotAvailableException(String symbol) {
         super("Stock not available: " + symbol);
