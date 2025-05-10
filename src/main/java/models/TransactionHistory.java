@@ -15,8 +15,7 @@ public class TransactionHistory {
     }
 
     public void addTransaction(Transaction t){
-        for (Transaction existing : transactions)
-            transactions.add(t);
+        transactions.add(t);
     }
 
     public ArrayList<Transaction> getTransactionsByTrader(String traderName) {
