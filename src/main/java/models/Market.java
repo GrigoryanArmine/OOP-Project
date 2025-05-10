@@ -1,6 +1,6 @@
-package main.models;
+package main.java.models;
 
-import main.exceptions.StockNotAvailableException;
+import main.java.exceptions.StockNotAvailableException;
 import java.util.ArrayList;
 
 public class Market {
