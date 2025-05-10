@@ -1,4 +1,4 @@
-package main.exceptions;
+package main.java.exceptions;
 
 public class InsufficientFundsException extends RuntimeException {
     public InsufficientFundsException(double balance, double required) {
