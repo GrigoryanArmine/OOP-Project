@@ -1,7 +1,7 @@
-package main.models;
+package main.java.models;
 
 
-import main.exceptions.InvalidQuantityException;
+import main.java.exceptions.InvalidQuantityException;
 import java.time.LocalDateTime;
 
 public class Transaction {
