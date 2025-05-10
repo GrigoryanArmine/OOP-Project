@@ -51,10 +51,13 @@
 // }
 
 
+
 package main;
 
 import main.models.*;
 import main.exceptions.*;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
@@ -183,7 +186,7 @@ public class Main {
                 case 2 -> addClient(broker);
                 case 3 -> removeClient(broker);
                 case 4 -> viewClientPortfolio(broker);
-                case 5 -> listAllClients(broker);
+                case 5 -> broker.listAllClients();
                 case 6 -> advanceMarket();
                 case 7 -> {
                     currentUser = null;
@@ -198,7 +201,8 @@ public class Main {
     // Shared market operations
     private static void viewMarketPrices() {
         System.out.println("\n=== CURRENT MARKET PRICES ===");
-        for(Stock stock : market.getStocks()) {
+        ArrayList<Stock> stocks = market.getStocks();
+        for(Stock stock : stocks) {
             System.out.printf("%-6s: $%-10.2f (History: %d entries)\n",
                     stock.getSymbol(),
                     stock.getCurrentPrice(),
@@ -307,36 +311,16 @@ public class Main {
     }
 
     private static void viewClientPortfolio(Broker broker) {
-        List<Trader> clients = broker.getClients();
-        if(clients.isEmpty()) {
-            System.out.println("No clients available.");
-            return;
-        }
-
-        System.out.println("\nClient List:");
-        for(int i = 0; i < clients.size(); i++) {
-            System.out.printf("%d. %s\n", i+1, clients.get(i).getName());
-        }
-
-        System.out.print("Select client to view (number): ");
+        ArrayList<Trader> clients = broker.getClients();
+        System.out.print("\nSelect client to view details (0 to cancel): ");
         int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-
+        scanner.nextLine();
         if(choice > 0 && choice <= clients.size()) {
             Trader client = clients.get(choice-1);
-            System.out.printf("\n=== %s's PORTFOLIO ===\n", client.getName());
-            client.getPortfolio().display();
-            System.out.printf("Cash Balance: $%.2f\n", client.getBalance());
-        } else {
+            broker.viewClientPortfolio(client);
+        } else if (choice != 0) {
             System.out.println("Invalid selection.");
         }
     }
-
-    private static void listAllClients(Broker broker) {
-        List<Trader> clients = broker.getClients();
-        System.out.println("\n=== CLIENT LIST ===");
-        for (Trader client : clients) {
-            broker.viewClientPortfolio(client);
-        }
-    }
+    
 }
