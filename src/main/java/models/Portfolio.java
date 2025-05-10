@@ -1,5 +1,5 @@
-package main.models;
-import main.exceptions.InvalidQuantityException;
+package main.java.models;
+import main.java.exceptions.InvalidQuantityException;
 import java.util.ArrayList;
 
 public class Portfolio {
