@@ -1,4 +1,4 @@
-package main.models;
+package main.java.models;
 import java.util.Random;
 
 public abstract class User {
