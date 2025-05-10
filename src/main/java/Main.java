@@ -5,24 +5,41 @@ import main.java.exceptions.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+/**
+ * The Main class serves as the entry point for the Stock Market Simulation application.
+ * Users can log in as Traders or Brokers and interact with a simulated market.
+ */
 public class Main {
     private Market market;
     private Scanner scanner;
     private User currentUser;
 
+    /**
+     * Launches the stock market simulation.
+     *
+     * @param args Command-line arguments (not used)
+     */
     public static void main(String[] args) {
         Main game = new Main();
         game.start();
     }
-    private void start(){
+
+    /**
+     * Starts the system by initializing components and displaying the welcome menu.
+     */
+    private void start() {
         initializeSystem();
         showWelcomeMenu();
     }
+
+    /**
+     * Initializes the market with sample stocks and prepares input handling.
+     */
     private void initializeSystem() {
         market = new Market();
         scanner = new Scanner(System.in);
 
-        // Initialize sample stocks
         market.addStock(new Stock("AAPL", 150.0));
         market.addStock(new Stock("MSFT", 250.0));
         market.addStock(new Stock("GOOGL", 2800.0));
@@ -30,6 +47,9 @@ public class Main {
         market.addStock(new Stock("TSLA", 700.0));
     }
 
+    /**
+     * Displays the main menu for user login and system exit options.
+     */
     private void showWelcomeMenu() {
         while (true) {
             System.out.println("\n=== Stock Market Simulation ===");
@@ -53,6 +73,9 @@ public class Main {
         }
     }
 
+    /**
+     * Prompts the user to create a Trader profile and launches the Trader menu.
+     */
     private void createTrader() {
         System.out.print("\nEnter your name: ");
         String name = scanner.nextLine();
@@ -67,6 +90,9 @@ public class Main {
         traderMainMenu();
     }
 
+    /**
+     * Prompts the user to create a Broker profile and launches the Broker menu.
+     */
     private void createBroker() {
         System.out.print("\nEnter your name: ");
         String name = scanner.nextLine();
@@ -77,6 +103,9 @@ public class Main {
         brokerMainMenu();
     }
 
+    /**
+     * Displays and handles the Trader-specific options menu.
+     */
     private void traderMainMenu() {
         Trader trader = (Trader) currentUser;
 
@@ -111,6 +140,9 @@ public class Main {
         }
     }
 
+    /**
+     * Displays and handles the Broker-specific options menu.
+     */
     private void brokerMainMenu() {
         Broker broker = (Broker) currentUser;
 
@@ -145,7 +177,9 @@ public class Main {
         }
     }
 
-    // Shared market operations
+    /**
+     * Displays current stock prices along with price history information.
+     */
     private void viewMarketPrices() {
         System.out.println("\n=== CURRENT MARKET PRICES ===");
         ArrayList<Stock> stocks = market.getStocks();
@@ -157,19 +191,31 @@ public class Main {
         }
     }
 
+    /**
+     * Advances the simulation by one day and updates stock prices.
+     */
     private void advanceMarket() {
         market.simulatePriceChanges();
         System.out.println("\nMarket prices updated for the new day!");
         viewMarketPrices();
     }
 
-    // Trader-specific operations
+    /**
+     * Displays the Trader's balance and portfolio holdings.
+     *
+     * @param trader The Trader whose portfolio is being viewed
+     */
     private void viewPortfolio(Trader trader) {
         System.out.println("\n=== PORTFOLIO OVERVIEW ===");
         System.out.printf("Cash Balance: $%.2f\n", trader.getBalance());
-        trader.getPortfolio().display(); // Pass market for price lookup
+        trader.getPortfolio().display();
     }
 
+    /**
+     * Allows the Trader to purchase stocks from the market.
+     *
+     * @param trader The Trader performing the purchase
+     */
     private void buyStocks(Trader trader) {
         viewMarketPrices();
         System.out.print("\nEnter stock symbol to buy: ");
@@ -188,6 +234,11 @@ public class Main {
         }
     }
 
+    /**
+     * Allows the Trader to sell stocks from their portfolio.
+     *
+     * @param trader The Trader performing the sale
+     */
     private void sellStocks(Trader trader) {
         System.out.println("\n=== CURRENT HOLDINGS ===");
         trader.getPortfolio().display();
@@ -208,6 +259,11 @@ public class Main {
         }
     }
 
+    /**
+     * Displays all transactions made by the Trader.
+     *
+     * @param trader The Trader whose transactions are being displayed
+     */
     private void viewTransactionHistory(Trader trader) {
         System.out.println("\n=== TRANSACTION HISTORY ===");
         List<Transaction> transactions = trader.getTransactionHistory().getTransactionsByTrader(trader.getName());
@@ -220,7 +276,11 @@ public class Main {
         transactions.forEach(System.out::println);
     }
 
-    // Broker-specific operations
+    /**
+     * Allows the Broker to add a new Trader client.
+     *
+     * @param broker The Broker performing the operation
+     */
     private void addClient(Broker broker) {
         System.out.print("\nEnter new trader's name: ");
         String name = scanner.nextLine();
@@ -234,6 +294,11 @@ public class Main {
         System.out.println("Added new client: " + name);
     }
 
+    /**
+     * Allows the Broker to remove an existing Trader client.
+     *
+     * @param broker The Broker performing the operation
+     */
     private void removeClient(Broker broker) {
         List<Trader> clients = broker.getClients();
         if (clients.isEmpty()) {
@@ -257,6 +322,11 @@ public class Main {
         }
     }
 
+    /**
+     * Allows the Broker to view a specific client's portfolio.
+     *
+     * @param broker The Broker performing the operation
+     */
     private void viewClientPortfolio(Broker broker) {
         ArrayList<Trader> clients = broker.getClients();
         System.out.print("\nSelect client to view details (0 to cancel): ");
