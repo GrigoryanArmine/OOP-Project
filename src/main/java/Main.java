@@ -1,7 +1,7 @@
 package main;
 
-import main.models.*;
-import main.exceptions.*;
+import main.java.models.*;
+import main.java.exceptions.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
