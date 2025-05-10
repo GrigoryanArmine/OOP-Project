@@ -1,4 +1,4 @@
-package main;
+package main.java;
 
 import main.java.models.*;
 import main.java.exceptions.*;
