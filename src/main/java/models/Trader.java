@@ -30,7 +30,7 @@ public class Trader extends User implements TradeActions {
 
         balance -= totalCost;
         portfolio.addStock(String.valueOf(stock), quantity);
-        transactionHistory.addTransaction(new Transaction(stock, quantity, stock.getCurrentPrice(), "BUY"));
+        transactionHistory.addTransaction(new Transaction(name, stock.getSymbol(), quantity, stock.getCurrentPrice(), true));
         System.out.printf("Bought %d shares of %s at %.2f each.\n", quantity, stock.getSymbol(), stock.getCurrentPrice());
     }
 
@@ -38,7 +38,7 @@ public class Trader extends User implements TradeActions {
     public void sellStock(Stock stock, int quantity) throws InvalidQuantityException, StockNotAvailableException {
         portfolio.removeStock(String.valueOf(stock), quantity);
         balance += quantity * stock.getCurrentPrice();
-        transactionHistory.addTransaction(new Transaction(stock, quantity, stock.getCurrentPrice(), "SELL"));
+        transactionHistory.addTransaction(new Transaction(name, stock.getSymbol(), quantity, stock.getCurrentPrice(), false));
         System.out.printf("Sold %d shares of %s at %.2f each.\n", quantity, stock.getSymbol(), stock.getCurrentPrice());
     }
 
