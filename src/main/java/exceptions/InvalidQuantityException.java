@@ -1,4 +1,4 @@
-package main.exceptions;
+package main.java.exceptions;
 
 public class InvalidQuantityException extends RuntimeException {
     public InvalidQuantityException(double quantity, double current) {
