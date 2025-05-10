@@ -1,6 +1,6 @@
-package main.models;
+package main.java.models;
 
-import main.exceptions.*;
+import main.java.exceptions.*;
 
 public class Trader extends User implements TradeActions {
     private double balance;
