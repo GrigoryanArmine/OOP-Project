@@ -68,7 +68,7 @@ public class Portfolio {
         return totalValue;
     }
 
-    public void updateTotalValue() {
+    private void updateTotalValue() {
         totalValue = 0.0;
         for (int qty : quantities) {
             // Placeholder: add quantity; integrate price lookup as needed
