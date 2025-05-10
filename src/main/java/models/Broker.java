@@ -61,11 +61,37 @@ public class Broker extends User implements TradeActions {
             System.out.println("Trader " + trader.getName() + " is not a client");
             return;
         }
-        System.out.printf("\n--- %s's Portfolio ---\n", trader.getName());
-        getPortfolio().display();
-        System.out.printf("Current balance: $%.2f\n\n", trader.getBalance());
+        System.out.printf("\n=== %s's PORTFOLIO DETAILS ===\n", trader.getName());
+        System.out.println("Client ID: " + trader.getUserId());
+        System.out.println("-----------------------------");
+        trader.getPortfolio().display();
+        System.out.println("-----------------------------");
+        System.out.printf("Cash Balance: $%.2f\n", trader.getBalance());
+        System.out.println("-----------------------------");
     }
 
+    public void listAllClients() {
+        if (clients.isEmpty()) {
+            System.out.println("No clients available.");
+            return;
+        }
+
+        System.out.println("\n=== CLIENT SUMMARY LIST ===");
+        System.out.println("------------------------------------------------");
+        System.out.printf("%-5s | %-20s | %-10s | %-15s\n", "No.", "Name", "ID", "Balance");
+        System.out.println("------------------------------------------------");
+
+        for (int i = 0; i < clients.size(); i++) {
+            Trader client = clients.get(i);
+            System.out.printf("%-5d | %-20s | %-10s | $%-15.2f\n",
+                    i + 1,  // Index number starting from 1
+                    client.getName(),
+                    client.getUserId(),
+                    client.getBalance());
+        }
+        System.out.println("------------------------------------------------");
+        System.out.println("Total clients: " + clients.size());
+    }
     
     public String getRoleDetails() {
         return "Licensed broker managing " + clients.size() + " clients";
